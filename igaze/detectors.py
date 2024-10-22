@@ -276,3 +276,24 @@ def scan_path(fixations):
 
 def number_of_fixations(fixations):
     return len(fixations)
+
+
+# Function to calculate dwell time and dwell count for a specific AOI
+def calculate_dwell_time_and_dwell_count(df, x_min, x_max, y_min, y_max):
+    
+    # Filter the data to include only gaze points within the AOI
+    aoi_gaze_points = df[
+        (df['gaze_position_x'] >= x_min) & 
+        (df['gaze_position_x'] <= x_max) & 
+        (df['gaze_position_y'] >= y_min) & 
+        (df['gaze_position_y'] <= y_max)
+    ]
+
+    # Calculate the total dwell time by summing durations
+    total_dwell_time_in_aoi = aoi_gaze_points['duration'].sum()
+
+    # Calculate the dwell count (number of individual gaze points within AOI)
+    dwell_count = len(aoi_gaze_points)
+
+    # Return both dwell time and dwell count
+    return total_dwell_time_in_aoi, dwell_count
